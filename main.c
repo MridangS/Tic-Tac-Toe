@@ -8,10 +8,11 @@
 	:,:,:,:,:,
 	:,O,-,X,:,
 	:,X,-,-,:,
-	:,-,-,-,:,
+	:,-,-,X,:,
 	:,:,:,:,:,
  }
  */
+
 
 enum { NOUGHTS, CROSSES, BORDER, EMPTY };
 
@@ -46,6 +47,99 @@ void PrintBoard(const int *board) {
     }
     printf("\n");
 }
+
+
+void RunGameSingle()
+{
+    int draw=0;
+    int board[25];
+    int randmove=0;
+    int move = 0;
+    int scan;
+    int Gameover;
+    int availablemoves[9];
+    int checkmove=0;
+    char user1[50];
+    
+    
+    InitialiseBoard(&board[0]);
+    PrintBoard(&board[0]);
+    
+    printf("Enter your Name User : ");
+    scanf("%s",&user1);
+    
+    for (Gameover=0; Gameover < 9; ++Gameover) {
+        
+        if (move==0) {
+            
+            printf("\n %s : ",user1);
+            scanf("%d", &scan);
+            if (scan>=9 || scan<=-1 || (board[ConvertTo25[scan]])!=EMPTY) {
+                printf("Please enter a valid choice");
+                Gameover--;
+            }
+            else{
+                board[ConvertTo25[scan]] = NOUGHTS;
+                system("clear");
+                move=1;
+            }
+        
+        }
+        
+       else
+       {
+           
+           int index;
+           for (index=0; index < 9; ++index) {
+               
+               if (board[ConvertTo25[index]]!=NOUGHTS && board[ConvertTo25[index]]!=CROSSES) {
+        
+                   availablemoves[checkmove++]=ConvertTo25[index];
+                   
+               }
+ 
+           }
+           randmove = (rand() % checkmove);
+           board[availablemoves[randmove]] = CROSSES;
+           checkmove = 0;
+           move = 0;
+       }
+     
+        PrintBoard(&board[0]);
+        if ((board[ConvertTo25[0]] == NOUGHTS && board[ConvertTo25[1]] == NOUGHTS && board[ConvertTo25[2]] == NOUGHTS) || (board[ConvertTo25[3]] == NOUGHTS && board[ConvertTo25[4]] == NOUGHTS && board[ConvertTo25[5]] == NOUGHTS) || (board[ConvertTo25[6]] == NOUGHTS && board[ConvertTo25[7]] == NOUGHTS && board[ConvertTo25[8]] == NOUGHTS) ||
+            (board[ConvertTo25[0]] == NOUGHTS && board[ConvertTo25[3]] == NOUGHTS && board[ConvertTo25[6]] == NOUGHTS) ||
+            (board[ConvertTo25[1]] == NOUGHTS && board[ConvertTo25[4]] == NOUGHTS && board[ConvertTo25[7]] == NOUGHTS) ||
+            (board[ConvertTo25[2]] == NOUGHTS && board[ConvertTo25[5]] == NOUGHTS && board[ConvertTo25[8]] == NOUGHTS) ||
+            (board[ConvertTo25[0]] == NOUGHTS && board[ConvertTo25[4]] == NOUGHTS && board[ConvertTo25[8]] == NOUGHTS) ||
+            (board[ConvertTo25[2]] == NOUGHTS && board[ConvertTo25[4]] == NOUGHTS && board[ConvertTo25[6]] == NOUGHTS)) {
+            
+            printf("\n\nUser Wins");
+            draw = 1;
+            exit(0);
+        }
+        if ((board[ConvertTo25[0]] == CROSSES && board[ConvertTo25[1]] == CROSSES && board[ConvertTo25[2]] == CROSSES) || (board[ConvertTo25[3]] == CROSSES && board[ConvertTo25[4]] == CROSSES && board[ConvertTo25[5]] == CROSSES) || (board[ConvertTo25[6]] == CROSSES && board[ConvertTo25[7]] == CROSSES && board[ConvertTo25[8]] == CROSSES) ||
+            (board[ConvertTo25[0]] == CROSSES && board[ConvertTo25[3]] == CROSSES && board[ConvertTo25[6]] == CROSSES) ||
+            (board[ConvertTo25[1]] == CROSSES && board[ConvertTo25[4]] == CROSSES && board[ConvertTo25[7]] == CROSSES) ||
+            (board[ConvertTo25[2]] == CROSSES && board[ConvertTo25[5]] == CROSSES && board[ConvertTo25[8]] == CROSSES) ||
+            (board[ConvertTo25[0]] == CROSSES && board[ConvertTo25[4]] == CROSSES && board[ConvertTo25[8]] == CROSSES) ||
+            (board[ConvertTo25[2]] == CROSSES && board[ConvertTo25[4]] == CROSSES && board[ConvertTo25[6]] == CROSSES)) {
+            
+            printf("\n\nComputer Wins");
+            draw = 1;
+            exit(0);
+        }
+        
+        
+    }
+    if (draw==0) {
+        printf("\n\nIts a Draw");
+    }
+    printf("\n\nGame Over");
+        
+        
+}
+    
+
 
 
 void RunGameMulti() {
@@ -100,6 +194,10 @@ void RunGameMulti() {
             system("clear");
             Move=0;
             }
+            
+            
+            
+            
         }
         
         PrintBoard(&board[0]);
@@ -153,7 +251,7 @@ start:
     switch (choice) {
         case 1:
             system("clear");
-            printf("\n\nUnder Development :-(");
+            RunGameSingle();
             printf("\n\nPress any key to go to main menu");
             scanf("%d",&back);
             goto start;
